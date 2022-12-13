@@ -284,32 +284,35 @@ if ! test -f "$USER_PATH/.profile.d/01_ssh_agent"; then
     log ok "Added the SSH agent loading script"
 fi
 
-# --- Install patched Sauce Code Pro Nerd Font ---------------------------------
+# --- Install custom fonts -----------------------------------------------------
 
+FONTS_PATH="$USER_PATH/.local/share/fonts"
+
+# Sauce Code Pro (Source Code Pro patched with Nerd Fonts)
 if ! test -d "$USER_PATH/.local/share/fonts/sauce-code-pro"; then
     log info "Installing patched Sauce Code Pro Nerd Font..."
-    quiet_unelevated mkdir -p "$USER_PATH/.local/share/fonts/sauce-code-pro"
+    FONT_PATH_SAUCE="$FONTS_PATH/sauce-code-pro"
+    quiet_unelevated mkdir -p "$FONT_PATH_SAUCE"
     quiet_unelevated curl -fsSL \
-        -o "$USER_PATH/.local/share/fonts/sauce-code-pro/Sauce Code Pro Nerd Font Complete.ttf" \
+        -o "$FONT_PATH_SAUCE/Sauce Code Pro Nerd Font Complete.ttf" \
         "https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf?raw=true"
     quiet_unelevated fc-cache -v
     log ok "Installed patched Sauce Code Pro Nerd Font"
 fi
 
-# --- Install FontAwesome fonts ------------------------------------------------
-
+# Font Awesome 6 Free
 if ! test -d "$USER_PATH/.local/share/fonts/font-awesome"; then
     log info "Installing FontAwesome..."
-    quiet_unelevated mkdir -p "$USER_PATH/.local/share/fonts/font-awesome"
+    FONT_PATH_AWESOME="$FONTS_PATH/font-awesome"
+    AWESOME_DIR="fontawesome-free-6.2.1-desktop"
+    quiet_unelevated mkdir -p "$FONT_PATH_AWESOME"
     quiet_unelevated curl -L \
-        "https://use.fontawesome.com/releases/v6.2.1/fontawesome-free-6.2.1-desktop.zip" \
-        -o "$USER_PATH/.local/share/fonts/font-awesome/fontawesome-free-6.2.1-desktop.zip"
-    quiet_unelevated unzip "$USER_PATH/.local/share/fonts/font-awesome/fontawesome-free-6.2.1-desktop.zip" \
-        -d "$USER_PATH/.local/share/fonts/font-awesome"
-    quiet_unelevated mv "$USER_PATH/.local/share/fonts/font-awesome/fontawesome-free-6.2.1-desktop/otfs/*" \
-        "$USER_PATH/.local/share/fonts/font-awesome/"
-    quiet_unelevated rm "$USER_PATH/.local/share/fonts/font-awesome/fontawesome-free-6.2.1-desktop.zip"
-    quiet_unelevated rm -rf "$USER_PATH/.local/share/fonts/font-awesome/fontawesome-free-6.2.1-desktop"
+        -o "$FONT_PATH_AWESOME/$AWESOME_DIR.zip"
+        "https://use.fontawesome.com/releases/v6.2.1/$AWESOME_DIR.zip" \
+    quiet_unelevated unzip "$FONT_PATH_AWESOME/$AWESOME_DIR.zip" -d "$FONT_PATH_AWESOME"
+    quiet_unelevated mv "$FONT_PATH_AWESOME/$AWESOME_DIR/otfs/*" "$FONT_PATH_AWESOME/"
+    quiet_unelevated rm "$FONT_PATH_AWESOME/$AWESOME_DIR.zip"
+    quiet_unelevated rm -rf "$FONT_PATH_AWESOME/$AWESOME_DIR"
     quiet_unelevated fc-cache -v
     log ok "Installed FontAwesome"
 fi
